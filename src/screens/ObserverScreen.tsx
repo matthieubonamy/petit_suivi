@@ -158,7 +158,7 @@ export function ObserverScreen() {
                   ]}
                   onPress={() => setSelectedChildId(child.id)}
                 >
-                  <AvatarCircle name={child.name} color={child.avatarColor} size={28} />
+                  <AvatarCircle name={child.name} color={child.avatarColor} avatarId={child.avatarId} size={28} />
                   <Text
                     style={[
                       styles.childChipText,

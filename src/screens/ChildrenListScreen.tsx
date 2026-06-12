@@ -113,7 +113,7 @@ export function ChildrenListScreen({ navigation }: Props) {
 
               {/* Main row */}
               <View style={styles.cardMain}>
-                <AvatarCircle name={child.name} color={child.avatarColor} size={60} />
+                <AvatarCircle name={child.name} color={child.avatarColor} avatarId={child.avatarId} size={60} />
 
                 <View style={styles.cardInfo}>
                   <Text style={styles.childName}>{child.name}</Text>

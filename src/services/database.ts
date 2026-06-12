@@ -12,6 +12,7 @@ export function initDatabase(): void {
       name TEXT NOT NULL,
       birth_date TEXT NOT NULL,
       avatar_color TEXT NOT NULL DEFAULT '#C97B4A',
+      avatar_id TEXT,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
@@ -47,53 +48,27 @@ function generateId(): string {
 }
 
 // Children
-export function getAllChildren(): Child[] {
-  const rows = db.getAllSync<{
-    id: string;
-    name: string;
-    birth_date: string;
-    avatar_color: string;
-    created_at: string;
-    updated_at: string;
-  }>('SELECT * FROM children ORDER BY created_at ASC');
+type ChildRow = { id: string; name: string; birth_date: string; avatar_color: string; avatar_id: string | null; created_at: string; updated_at: string };
 
-  return rows.map((r) => ({
-    id: r.id,
-    name: r.name,
-    birthDate: r.birth_date,
-    avatarColor: r.avatar_color,
-    createdAt: r.created_at,
-    updatedAt: r.updated_at,
-  }));
+function rowToChild(r: ChildRow): Child {
+  return { id: r.id, name: r.name, birthDate: r.birth_date, avatarColor: r.avatar_color, avatarId: r.avatar_id ?? undefined, createdAt: r.created_at, updatedAt: r.updated_at };
+}
+
+export function getAllChildren(): Child[] {
+  return db.getAllSync<ChildRow>('SELECT * FROM children ORDER BY created_at ASC').map(rowToChild);
 }
 
 export function getChildById(id: string): Child | null {
-  const row = db.getFirstSync<{
-    id: string;
-    name: string;
-    birth_date: string;
-    avatar_color: string;
-    created_at: string;
-    updated_at: string;
-  }>('SELECT * FROM children WHERE id = ?', [id]);
-
-  if (!row) return null;
-  return {
-    id: row.id,
-    name: row.name,
-    birthDate: row.birth_date,
-    avatarColor: row.avatar_color,
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-  };
+  const row = db.getFirstSync<ChildRow>('SELECT * FROM children WHERE id = ?', [id]);
+  return row ? rowToChild(row) : null;
 }
 
 export function insertChild(data: Omit<Child, 'id' | 'createdAt' | 'updatedAt'>): Child {
   const id = generateId();
   const now = new Date().toISOString();
   db.runSync(
-    'INSERT INTO children (id, name, birth_date, avatar_color, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-    [id, data.name, data.birthDate, data.avatarColor, now, now]
+    'INSERT INTO children (id, name, birth_date, avatar_color, avatar_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [id, data.name, data.birthDate, data.avatarColor, data.avatarId ?? null, now, now]
   );
   return { id, ...data, createdAt: now, updatedAt: now };
 }
@@ -101,15 +76,15 @@ export function insertChild(data: Omit<Child, 'id' | 'createdAt' | 'updatedAt'>)
 export function updateChild(id: string, data: Partial<Omit<Child, 'id' | 'createdAt' | 'updatedAt'>>): void {
   const now = new Date().toISOString();
   const fields: string[] = [];
-  const values: (string | number)[] = [];
+  const values: (string | number | null)[] = [];
 
   if (data.name !== undefined) { fields.push('name = ?'); values.push(data.name); }
   if (data.birthDate !== undefined) { fields.push('birth_date = ?'); values.push(data.birthDate); }
   if (data.avatarColor !== undefined) { fields.push('avatar_color = ?'); values.push(data.avatarColor); }
+  if (data.avatarId !== undefined) { fields.push('avatar_id = ?'); values.push(data.avatarId); }
 
   fields.push('updated_at = ?');
-  values.push(now);
-  values.push(id);
+  values.push(now, id);
 
   db.runSync(`UPDATE children SET ${fields.join(', ')} WHERE id = ?`, values);
 }

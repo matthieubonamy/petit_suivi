@@ -5,7 +5,8 @@ export interface Child {
   id: string;
   name: string;
   birthDate: string; // ISO date string YYYY-MM-DD
-  avatarColor: string; // hex color
+  avatarColor: string; // hex color (fallback)
+  avatarId?: string;  // illustrated avatar id (eg. 'b1', 'm3')
   createdAt: string;
   updatedAt: string;
 }
