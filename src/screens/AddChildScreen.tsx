@@ -106,13 +106,21 @@ export function AddChildScreen({ navigation, route }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingBottom: 16 }]}
+        contentContainerStyle={[styles.content, { paddingBottom: 32 }]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backText}>← Retour</Text>
-        </TouchableOpacity>
+        {/* Header row */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+            <Text style={styles.backText}>← Retour</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSave} style={styles.saveTopBtn}>
+            <Text style={styles.saveTopText}>
+              {isEditing ? 'Enregistrer' : 'Ajouter'}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.heading}>
           {isEditing ? 'Modifier l\'enfant' : 'Ajouter un enfant'}
@@ -197,31 +205,34 @@ export function AddChildScreen({ navigation, route }: Props) {
           })}
         </View>
       </ScrollView>
-
-      {/* Sticky save button */}
-      <View style={[styles.footer, { paddingBottom: Platform.OS === 'web' ? 24 : Math.max(insets.bottom, 12) }]}>
-        <Button
-          label={isEditing ? 'Enregistrer les modifications' : 'Ajouter l\'enfant'}
-          onPress={handleSave}
-          fullWidth
-        />
-      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24, paddingBottom: 8 },
-  footer: {
-    paddingHorizontal: 24,
-    paddingTop: 12,
-    backgroundColor: colors.bg,
-    borderTopWidth: 1,
-    borderTopColor: colors.bdr,
+  content: { padding: 24, paddingBottom: 32 },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
   },
-  backBtn: { minHeight: 44, justifyContent: 'center', marginBottom: 8, alignSelf: 'flex-start' },
+  backBtn: { minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start' },
   backText: { fontFamily: 'Nunito_700Bold', fontSize: 15, color: colors.primary },
+  saveTopBtn: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 22,
+    minHeight: 44,
+    justifyContent: 'center',
+  },
+  saveTopText: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 15,
+    color: '#fff',
+  },
   heading: {
     fontFamily: 'Fraunces_600SemiBold',
     fontSize: 26,
