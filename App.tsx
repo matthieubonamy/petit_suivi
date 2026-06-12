@@ -33,6 +33,7 @@ import { ObserverScreen } from './src/screens/ObserverScreen';
 import { HistoriqueScreen } from './src/screens/HistoriqueScreen';
 import { ReferencesScreen } from './src/screens/ReferencesScreen';
 import { AlertesScreen } from './src/screens/AlertesScreen';
+import { ProfilScreen } from './src/screens/ProfilScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
 import { APIKeysScreen } from './src/screens/APIKeysScreen';
 import { LegalScreen } from './src/screens/LegalScreen';
@@ -87,6 +88,11 @@ function MainTabs() {
         name="Alertes"
         component={AlertesScreen}
         options={{ tabBarLabel: 'Alertes', tabBarIcon: () => <TabIcon emoji="⚠️" /> }}
+      />
+      <Tab.Screen
+        name="Profil"
+        component={ProfilScreen}
+        options={{ tabBarLabel: 'Mon espace', tabBarIcon: () => <TabIcon emoji="👤" /> }}
       />
     </Tab.Navigator>
   );

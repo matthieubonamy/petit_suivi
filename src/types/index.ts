@@ -58,9 +58,10 @@ export type RootStackParamList = {
 
 export type MainTabParamList = {
   Observer: undefined;
+  Historique: undefined;
   Reperes: undefined;
   Alertes: undefined;
-  Historique: undefined;
+  Profil: undefined;
 };
 
 export interface AuthUser {

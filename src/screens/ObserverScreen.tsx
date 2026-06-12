@@ -132,12 +132,6 @@ export function ObserverScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Observer</Text>
-        <TouchableOpacity
-          style={styles.settingsBtn}
-          onPress={() => navigation.navigate('Settings')}
-        >
-          <Text style={styles.settingsIcon}>⚙️</Text>
-        </TouchableOpacity>
       </View>
 
       <ScrollView
