@@ -62,7 +62,7 @@ export const BRISTOL_SCALE: BristolType[] = [
   {
     type: 5,
     description: 'Morceaux mous distincts',
-    detail: 'À surveiller',
+    detail: 'A surveiller',
     comment: 'Transit un peu rapide — à surveiller',
     medical:
       "Morceaux mous aux bords bien définis : transit légèrement accéléré. " +

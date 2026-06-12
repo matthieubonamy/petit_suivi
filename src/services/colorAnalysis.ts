@@ -42,7 +42,7 @@ export function getStatusFromColorId(colorId: string, type: 'stool' | 'urine'): 
 export function getStatusLabel(status: StatusLevel): string {
   switch (status) {
     case 'ok': return 'Normal';
-    case 'watch': return 'À surveiller';
+    case 'watch': return 'A surveiller';
     case 'alert': return 'Consulter un médecin';
   }
 }

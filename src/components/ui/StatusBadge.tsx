@@ -17,7 +17,7 @@ const STATUS_CONFIG = {
     border: '#C8E6C8',
   },
   watch: {
-    label: 'À surveiller',
+    label: 'A surveiller',
     bg: colors.waB,
     text: colors.waT,
     border: colors.waBdr,
