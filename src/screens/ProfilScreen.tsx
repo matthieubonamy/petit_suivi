@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +17,46 @@ import { useChildren } from '../stores/ChildrenContext';
 import { AvatarCircle } from '../components/ui/AvatarCircle';
 import { PSLogo } from '../components/ui/PSLogo';
 import { RootStackParamList } from '../types';
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
+function useInstallPrompt() {
+  const promptRef = useRef<BeforeInstallPromptEvent | null>(null);
+  const [canInstall, setCanInstall] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web') return;
+    if (window.matchMedia('(display-mode: standalone)').matches) return;
+
+    const ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream) {
+      setIsIOS(true);
+      setCanInstall(true);
+      return;
+    }
+
+    const handler = (e: Event) => {
+      e.preventDefault();
+      promptRef.current = e as BeforeInstallPromptEvent;
+      setCanInstall(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  async function triggerInstall() {
+    if (!promptRef.current) return;
+    await promptRef.current.prompt();
+    await promptRef.current.userChoice;
+    setCanInstall(false);
+  }
+
+  return { canInstall, isIOS, triggerInstall };
+}
 
 type NavProp = StackNavigationProp<RootStackParamList>;
 
@@ -65,6 +106,7 @@ export function ProfilScreen() {
   const navigation = useNavigation<NavProp>();
   const { user, logout } = useAuth();
   const { children, selectedChildId, setSelectedChildId } = useChildren();
+  const { canInstall, isIOS, triggerInstall } = useInstallPrompt();
 
   async function handleLogout() {
     Alert.alert('Déconnexion', 'Voulez-vous vous déconnecter ?', [
@@ -187,6 +229,36 @@ export function ProfilScreen() {
             onPress={() => navigation.navigate('APIKeys')}
           />
         </View>
+
+        {/* Installer l'app */}
+        {canInstall && (
+          <>
+            <Text style={styles.section}>Application</Text>
+            <View style={styles.card}>
+              {isIOS ? (
+                <View style={styles.iosInstall}>
+                  <Text style={styles.iosInstallIcon}>📲</Text>
+                  <View style={styles.iosInstallText}>
+                    <Text style={styles.iosInstallTitle}>Installer sur votre iPhone</Text>
+                    <Text style={styles.iosInstallSub}>
+                      Appuyez sur{' '}
+                      <Text style={styles.iosInstallBold}>Partager</Text>
+                      {' '}→{' '}
+                      <Text style={styles.iosInstallBold}>Sur l'écran d'accueil</Text>
+                    </Text>
+                  </View>
+                </View>
+              ) : (
+                <Row
+                  icon="📲"
+                  label="Installer l'application"
+                  subtitle="Accès rapide depuis l'écran d'accueil"
+                  onPress={triggerInstall}
+                />
+              )}
+            </View>
+          </>
+        )}
 
         {/* Légal */}
         <Text style={styles.section}>Légal</Text>
@@ -421,5 +493,30 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular',
     fontSize: 11,
     color: colors.bdr,
+  },
+
+  iosInstall: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 14,
+    gap: 12,
+  },
+  iosInstallIcon: { fontSize: 28 },
+  iosInstallText: { flex: 1 },
+  iosInstallTitle: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 15,
+    color: colors.dk,
+    marginBottom: 3,
+  },
+  iosInstallSub: {
+    fontFamily: 'Nunito_400Regular',
+    fontSize: 13,
+    color: colors.mu,
+    lineHeight: 18,
+  },
+  iosInstallBold: {
+    fontFamily: 'Nunito_700Bold',
+    color: colors.dk,
   },
 });
