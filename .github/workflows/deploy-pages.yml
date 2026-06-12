@@ -43,6 +43,8 @@ jobs:
           sed -i 's|href="/assets/|href="/petit_suivi/assets/|g' dist/index.html
           # Fix asset paths inside the JS bundle (fonts, images, etc.)
           find dist/_expo -name "*.js" -exec sed -i 's|"/assets/|"/petit_suivi/assets/|g' {} \;
+          # Inject PWA meta tags (apple touch icon, theme color)
+          sed -i 's|</head>|  <link rel="apple-touch-icon" href="/petit_suivi/assets/apple-touch-icon.png">\n  <meta name="theme-color" content="#FAF6F0">\n  <meta name="mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-title" content="Petit Suivi">\n</head>|g' dist/index.html
           echo "--- index.html after fix ---"
           cat dist/index.html
 

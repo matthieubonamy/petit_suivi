@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import { colors } from '../../constants/tokens';
 
 interface PSLogoProps {
@@ -10,11 +10,21 @@ interface PSLogoProps {
 export function PSLogo({ size = 'md', showTagline = false }: PSLogoProps) {
   const scales = { sm: 0.7, md: 1, lg: 1.4 };
   const s = scales[size];
+  const dim = Math.round(48 * s);
 
   return (
     <View style={styles.container}>
-      <View style={[styles.logoMark, { width: 48 * s, height: 48 * s, borderRadius: 14 * s }]}>
-        <Text style={[styles.logoText, { fontSize: 22 * s }]}>PS</Text>
+      <View
+        style={[
+          styles.logoMark,
+          { width: dim, height: dim, borderRadius: Math.round(14 * s) },
+        ]}
+      >
+        <Image
+          source={require('../../../assets/icon-192.png')}
+          style={{ width: dim, height: dim, borderRadius: Math.round(14 * s) }}
+          resizeMode="cover"
+        />
       </View>
       <View style={styles.textGroup}>
         <Text style={[styles.appName, { fontSize: 22 * s }]}>Petit Suivi</Text>
@@ -35,13 +45,10 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   logoMark: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.pl,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logoText: {
-    color: '#fff',
-    fontFamily: 'Fraunces_600SemiBold',
+    overflow: 'hidden',
   },
   textGroup: {
     flexDirection: 'column',
@@ -56,3 +63,4 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
