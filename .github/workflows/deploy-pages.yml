@@ -43,6 +43,9 @@ jobs:
           echo "--- index.html after fix ---"
           cat dist/index.html
 
+      - name: Disable Jekyll (required for _expo directory)
+        run: touch dist/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
