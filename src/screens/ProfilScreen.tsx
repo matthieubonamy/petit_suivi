@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -232,32 +233,31 @@ export function ProfilScreen() {
 
         {/* Installer l'app */}
         {canInstall && (
-          <>
-            <Text style={styles.section}>Application</Text>
-            <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.installCard}
+            onPress={isIOS ? undefined : triggerInstall}
+            activeOpacity={isIOS ? 1 : 0.85}
+          >
+            <Image
+              source={require('../../assets/icon-192.png')}
+              style={styles.installIcon}
+            />
+            <View style={styles.installBody}>
+              <Text style={styles.installTitle}>Installer Petit Suivi</Text>
               {isIOS ? (
-                <View style={styles.iosInstall}>
-                  <Text style={styles.iosInstallIcon}>📲</Text>
-                  <View style={styles.iosInstallText}>
-                    <Text style={styles.iosInstallTitle}>Installer sur votre iPhone</Text>
-                    <Text style={styles.iosInstallSub}>
-                      Appuyez sur{' '}
-                      <Text style={styles.iosInstallBold}>Partager</Text>
-                      {' '}→{' '}
-                      <Text style={styles.iosInstallBold}>Sur l'écran d'accueil</Text>
-                    </Text>
-                  </View>
-                </View>
+                <Text style={styles.installSub}>
+                  Partager → <Text style={styles.installBold}>Sur l'écran d'accueil</Text>
+                </Text>
               ) : (
-                <Row
-                  icon="📲"
-                  label="Installer l'application"
-                  subtitle="Accès rapide depuis l'écran d'accueil"
-                  onPress={triggerInstall}
-                />
+                <Text style={styles.installSub}>Ajouter à l'écran d'accueil</Text>
               )}
             </View>
-          </>
+            {!isIOS && (
+              <View style={styles.installBtn}>
+                <Text style={styles.installBtnText}>Installer</Text>
+              </View>
+            )}
+          </TouchableOpacity>
         )}
 
         {/* Légal */}
@@ -493,6 +493,56 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular',
     fontSize: 11,
     color: colors.bdr,
+  },
+
+  installCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.sur,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    padding: 16,
+    marginBottom: 4,
+    gap: 14,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  installIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+  },
+  installBody: { flex: 1 },
+  installTitle: {
+    fontFamily: 'Fraunces_600SemiBold',
+    fontSize: 17,
+    color: colors.dk,
+    marginBottom: 3,
+  },
+  installSub: {
+    fontFamily: 'Nunito_400Regular',
+    fontSize: 13,
+    color: colors.mu,
+    lineHeight: 18,
+  },
+  installBold: {
+    fontFamily: 'Nunito_700Bold',
+    color: colors.dk,
+  },
+  installBtn: {
+    backgroundColor: colors.primary,
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  installBtnText: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 14,
+    color: '#fff',
   },
 
   iosInstall: {

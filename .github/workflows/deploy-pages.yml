@@ -50,9 +50,14 @@ jobs:
           sed -i 's|<head>|<head>\n  <meta name="google" content="notranslate">|g' dist/index.html
           # Inject PWA meta tags + manifest link
           sed -i 's|</head>|  <link rel="manifest" href="/petit_suivi/manifest.json">\n  <link rel="apple-touch-icon" href="/petit_suivi/assets/apple-touch-icon.png">\n  <meta name="theme-color" content="#C97B4A">\n  <meta name="mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-status-bar-style" content="default">\n  <meta name="apple-mobile-web-app-title" content="Petit Suivi">\n</head>|g' dist/index.html
-          # Copy manifest.json (already in web/ — Expo copies web/ to dist/)
-          # Ensure it's present even if Expo skips it
-          cp web/manifest.json dist/manifest.json 2>/dev/null || true
+          # Copy manifest.json
+          cp web/manifest.json dist/manifest.json
+          # Copy PWA icons (Expo only bundles assets used via require() — icons are not)
+          mkdir -p dist/assets
+          cp assets/icon-192.png dist/assets/icon-192.png
+          cp assets/icon-512.png dist/assets/icon-512.png
+          cp assets/apple-touch-icon.png dist/assets/apple-touch-icon.png
+          cp assets/favicon.png dist/assets/favicon.png
           echo "--- index.html after fix ---"
           cat dist/index.html
 
