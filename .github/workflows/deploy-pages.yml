@@ -36,10 +36,13 @@ jobs:
 
       - name: Fix asset paths for GitHub Pages subpath
         run: |
+          # Fix HTML references
           sed -i 's|src="/_expo/|src="/petit_suivi/_expo/|g' dist/index.html
           sed -i 's|href="/_expo/|href="/petit_suivi/_expo/|g' dist/index.html
           sed -i 's|href="/favicon|href="/petit_suivi/favicon|g' dist/index.html
           sed -i 's|href="/assets/|href="/petit_suivi/assets/|g' dist/index.html
+          # Fix asset paths inside the JS bundle (fonts, images, etc.)
+          find dist/_expo -name "*.js" -exec sed -i 's|"/assets/|"/petit_suivi/assets/|g' {} \;
           echo "--- index.html after fix ---"
           cat dist/index.html
 

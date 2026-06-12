@@ -1,13 +1,14 @@
 // Web stub for database.ts — uses localStorage for GitHub Pages demo
-import { Child, Observation } from '../types';
+import { Child, Observation, APIKeyEntry } from '../types';
 
 const KEY_CHILDREN = 'ps_children';
 const KEY_OBS = 'ps_observations';
+const KEY_APIKEYS = 'ps_api_keys';
 
 function load<T>(key: string, fallback: T): T {
   try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
+    const raw = (typeof localStorage !== 'undefined' && localStorage.getItem(key)) || null;
+    return raw ? (JSON.parse(raw) as T) : fallback;
   } catch {
     return fallback;
   }
@@ -15,64 +16,113 @@ function load<T>(key: string, fallback: T): T {
 
 function save(key: string, value: unknown): void {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
   } catch {}
+}
+
+function generateId(): string {
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
 
 export function initDatabase(): void {
   // no-op on web
 }
 
-export function getChildren(): Child[] {
+// Children
+export function getAllChildren(): Child[] {
   return load<Child[]>(KEY_CHILDREN, []);
 }
 
-export function addChild(child: Child): void {
-  const list = getChildren();
-  list.push(child);
-  save(KEY_CHILDREN, list);
+export function getChildById(id: string): Child | null {
+  return load<Child[]>(KEY_CHILDREN, []).find((c) => c.id === id) ?? null;
 }
 
-export function updateChild(child: Child): void {
-  const list = getChildren().map((c) => (c.id === child.id ? child : c));
+export function insertChild(data: Omit<Child, 'id' | 'createdAt' | 'updatedAt'>): Child {
+  const now = new Date().toISOString();
+  const child: Child = { id: generateId(), ...data, createdAt: now, updatedAt: now };
+  const list = load<Child[]>(KEY_CHILDREN, []);
+  list.push(child);
+  save(KEY_CHILDREN, list);
+  return child;
+}
+
+export function updateChild(id: string, data: Partial<Omit<Child, 'id' | 'createdAt' | 'updatedAt'>>): void {
+  const now = new Date().toISOString();
+  const list = load<Child[]>(KEY_CHILDREN, []).map((c) =>
+    c.id === id ? { ...c, ...data, updatedAt: now } : c
+  );
   save(KEY_CHILDREN, list);
 }
 
 export function deleteChild(id: string): void {
-  save(KEY_CHILDREN, getChildren().filter((c) => c.id !== id));
-  save(KEY_OBS, getObservations(id).filter((o) => o.childId !== id));
+  save(KEY_CHILDREN, load<Child[]>(KEY_CHILDREN, []).filter((c) => c.id !== id));
+  save(KEY_OBS, load<Observation[]>(KEY_OBS, []).filter((o) => o.childId !== id));
 }
 
-export function getObservations(childId: string, limit?: number): Observation[] {
-  const all = load<Observation[]>(KEY_OBS, []).filter((o) => o.childId === childId);
-  all.sort((a, b) => b.date - a.date);
-  return limit ? all.slice(0, limit) : all;
+// Observations
+export function getObservationsByChild(childId: string, limit = 100, offset = 0): Observation[] {
+  const all = load<Observation[]>(KEY_OBS, [])
+    .filter((o) => o.childId === childId)
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return all.slice(offset, offset + limit);
 }
 
-export function getAllObservations(): Observation[] {
-  return load<Observation[]>(KEY_OBS, []);
+export function getObservationsForPeriod(childId: string, fromDate: string, toDate: string): Observation[] {
+  return load<Observation[]>(KEY_OBS, []).filter(
+    (o) => o.childId === childId && o.createdAt >= fromDate && o.createdAt <= toDate
+  );
 }
 
-export function addObservation(obs: Observation): void {
+export function insertObservation(data: Omit<Observation, 'id' | 'createdAt'>): Observation {
+  const now = new Date().toISOString();
+  const obs: Observation = { id: generateId(), ...data, createdAt: now };
   const list = load<Observation[]>(KEY_OBS, []);
   list.unshift(obs);
   save(KEY_OBS, list);
+  return obs;
 }
 
 export function deleteObservation(id: string): void {
   save(KEY_OBS, load<Observation[]>(KEY_OBS, []).filter((o) => o.id !== id));
 }
 
-export function getObservationsByPeriod(
-  childId: string,
-  startDate: number,
-  endDate: number
-): Observation[] {
-  return load<Observation[]>(KEY_OBS, []).filter(
-    (o) => o.childId === childId && o.date >= startDate && o.date <= endDate
-  );
+// API Keys
+export function getAllAPIKeys(): APIKeyEntry[] {
+  return load<APIKeyEntry[]>(KEY_APIKEYS, []);
 }
 
-export function saveAPIKey(_service: string, _key: string): void {}
-export function getAPIKey(_service: string): string | null { return null; }
-export function deleteAPIKey(_service: string): void {}
+export function insertAPIKey(data: Omit<APIKeyEntry, 'id' | 'createdAt'>): APIKeyEntry {
+  const now = new Date().toISOString();
+  const entry: APIKeyEntry = { id: generateId(), ...data, createdAt: now };
+  const list = load<APIKeyEntry[]>(KEY_APIKEYS, []);
+  list.unshift(entry);
+  save(KEY_APIKEYS, list);
+  return entry;
+}
+
+export function deleteAPIKey(id: string): void {
+  save(KEY_APIKEYS, load<APIKeyEntry[]>(KEY_APIKEYS, []).filter((e) => e.id !== id));
+}
+
+// Stats
+export function getObservationCountByDay(
+  childId: string,
+  days = 7
+): Record<string, { stool: number; urine: number }> {
+  const result: Record<string, { stool: number; urine: number }> = {};
+  for (let i = 0; i < days; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    result[d.toISOString().split('T')[0]] = { stool: 0, urine: 0 };
+  }
+  for (const o of load<Observation[]>(KEY_OBS, []).filter((o) => o.childId === childId)) {
+    const dateStr = o.createdAt.split('T')[0];
+    if (result[dateStr]) {
+      if (o.type === 'stool') result[dateStr].stool++;
+      else result[dateStr].urine++;
+    }
+  }
+  return result;
+}
