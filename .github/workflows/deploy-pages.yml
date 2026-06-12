@@ -36,7 +36,12 @@ jobs:
 
       - name: Fix asset paths for GitHub Pages subpath
         run: |
-          sed -i 's|<head>|<head>\n  <base href="/petit_suivi/" />|' dist/index.html
+          sed -i 's|src="/_expo/|src="/petit_suivi/_expo/|g' dist/index.html
+          sed -i 's|href="/_expo/|href="/petit_suivi/_expo/|g' dist/index.html
+          sed -i 's|href="/favicon|href="/petit_suivi/favicon|g' dist/index.html
+          sed -i 's|href="/assets/|href="/petit_suivi/assets/|g' dist/index.html
+          echo "--- index.html after fix ---"
+          cat dist/index.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
