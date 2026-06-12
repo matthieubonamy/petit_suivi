@@ -1,6 +1,7 @@
 {
   "name": "Petit Suivi",
   "short_name": "Petit Suivi",
+  "id": "/petit_suivi/",
   "description": "Suivi des selles et urines de votre bébé",
   "start_url": "/petit_suivi/",
   "scope": "/petit_suivi/",
