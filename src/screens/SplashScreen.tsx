@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { colors } from '../constants/tokens';
 import { PSLogo } from '../components/ui/PSLogo';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Splash'>;
+type Props = StackScreenProps<RootStackParamList, 'Splash'>;
 
 export function SplashScreen({ navigation }: Props) {
   const opacity = React.useRef(new Animated.Value(0)).current;

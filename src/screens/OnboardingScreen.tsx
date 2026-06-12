@@ -10,12 +10,12 @@ import {
   NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { colors } from '../constants/tokens';
 import { Button } from '../components/ui/Button';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
+type Props = StackScreenProps<RootStackParamList, 'Onboarding'>;
 
 const { width } = Dimensions.get('window');
 

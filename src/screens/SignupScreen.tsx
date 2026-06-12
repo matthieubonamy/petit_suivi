@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { colors } from '../constants/tokens';
 import { useAuth } from '../stores/AuthContext';
@@ -17,7 +17,7 @@ import { Button } from '../components/ui/Button';
 import { TextInput } from '../components/ui/TextInput';
 import { Checkbox } from '../components/ui/Checkbox';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Signup'>;
+type Props = StackScreenProps<RootStackParamList, 'Signup'>;
 
 export function SignupScreen({ navigation }: Props) {
   const { register } = useAuth();
