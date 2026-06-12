@@ -9,14 +9,15 @@ import {
   Image,
   Alert,
   Animated,
+  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../constants/tokens';
-import { STOOL_COLORS, URINE_COLORS } from '../constants/stoolColors';
-import { BRISTOL_SCALE } from '../constants/bristolScale';
+import { STOOL_COLORS, URINE_COLORS, StoolColor, UrineColor } from '../constants/stoolColors';
+import { BRISTOL_SCALE, BristolType } from '../constants/bristolScale';
 import { useChildren } from '../stores/ChildrenContext';
 import { insertObservation } from '../services/database';
 import { getStatusFromColorId, computeOverallStatus, getBristolStatus, getStatusLabel, analyzePhotoColor } from '../services/colorAnalysis';
@@ -65,27 +66,54 @@ export function ObserverScreen() {
     ]).start(() => setSavedMsg(false));
   }, [fadeAnim]);
 
-  async function pickImage() {
-    const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!perm.granted) {
-      Alert.alert('Permission requise', 'Autorisez l\'accès à la galerie dans les paramètres.');
-      return;
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.7,
-      allowsEditing: true,
-      aspect: [1, 1],
-    });
-    if (!result.canceled && result.assets[0]) {
-      const uri = result.assets[0].uri;
-      setPhotoUri(uri);
-      setAnalyzing(true);
-      const analysis = await analyzePhotoColor(uri, type);
-      setAnalyzing(false);
-      if (analysis) {
-        setSelectedColorId(analysis.colorId);
+  async function launchPicker(mode: 'camera' | 'gallery') {
+    try {
+      let result;
+      if (mode === 'camera') {
+        await ImagePicker.requestCameraPermissionsAsync();
+        result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 0.7,
+          allowsEditing: true,
+          aspect: [1, 1],
+        });
+      } else {
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          quality: 0.7,
+          allowsEditing: true,
+          aspect: [1, 1],
+        });
       }
+      if (!result.canceled && result.assets[0]) {
+        const uri = result.assets[0].uri;
+        setPhotoUri(uri);
+        setAnalyzing(true);
+        const analysis = await analyzePhotoColor(uri, type);
+        setAnalyzing(false);
+        if (analysis) setSelectedColorId(analysis.colorId);
+      }
+    } catch {
+      // silent — user cancelled or permissions denied
+    }
+  }
+
+  function handlePhotoPress() {
+    if (Platform.OS === 'web') {
+      // Sur web : proposer galerie ou caméra
+      if (typeof window !== 'undefined' && (window as any).confirm) {
+        const useCamera = window.confirm('Prendre une photo avec l\'appareil photo ?\n(Annuler = choisir depuis la galerie)');
+        launchPicker(useCamera ? 'camera' : 'gallery');
+      } else {
+        launchPicker('gallery');
+      }
+    } else {
+      Alert.alert('Photo', 'Choisir la source', [
+        { text: '📷 Appareil photo', onPress: () => launchPicker('camera') },
+        { text: '🖼️ Galerie', onPress: () => launchPicker('gallery') },
+        { text: 'Annuler', style: 'cancel' },
+      ]);
     }
   }
 
@@ -192,13 +220,22 @@ export function ObserverScreen() {
         {/* Photo */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Photo (optionnel)</Text>
-          <TouchableOpacity style={styles.photoBox} onPress={pickImage}>
+          <TouchableOpacity style={styles.photoBox} onPress={handlePhotoPress}>
             {photoUri ? (
-              <Image source={{ uri: photoUri }} style={styles.photo} />
+              <>
+                <Image source={{ uri: photoUri }} style={styles.photo} />
+                <TouchableOpacity
+                  style={styles.photoRemove}
+                  onPress={() => setPhotoUri(null)}
+                >
+                  <Text style={styles.photoRemoveText}>✕</Text>
+                </TouchableOpacity>
+              </>
             ) : (
               <View style={styles.photoPlaceholder}>
                 <Text style={styles.photoIcon}>📷</Text>
-                <Text style={styles.photoHint}>Ajouter une photo</Text>
+                <Text style={styles.photoHint}>Appareil photo ou galerie</Text>
+                <Text style={styles.photoSub}>La photo est conservée localement</Text>
               </View>
             )}
           </TouchableOpacity>
@@ -229,6 +266,29 @@ export function ObserverScreen() {
               </TouchableOpacity>
             ))}
           </View>
+
+          {/* Contexte médical couleur */}
+          {selectedColorId && (() => {
+            const colorInfo = colorList.find((c) => c.id === selectedColorId) as (StoolColor | UrineColor) | undefined;
+            if (!colorInfo) return null;
+            const bgColor = colorInfo.status === 'ok' ? colors.okB : colorInfo.status === 'watch' ? colors.waB : colors.alB;
+            const txtColor = colorInfo.status === 'ok' ? colors.okT : colorInfo.status === 'watch' ? colors.waT : colors.alT;
+            const bdrColor = colorInfo.status === 'ok' ? colors.ok : colorInfo.status === 'watch' ? colors.waBdr : colors.alBdr;
+            return (
+              <View style={[styles.medicalCard, { backgroundColor: bgColor, borderColor: bdrColor }]}>
+                <View style={styles.medicalCardHeader}>
+                  <View style={[styles.colorDot, { backgroundColor: colorInfo.hex, borderColor: colorInfo.bordered ? colors.bdr : colorInfo.hex }]} />
+                  <Text style={[styles.medicalCardTitle, { color: txtColor }]}>{colorInfo.comment}</Text>
+                  {colorInfo.urgent && (
+                    <View style={styles.urgentBadge}>
+                      <Text style={styles.urgentText}>⚠️ Urgent</Text>
+                    </View>
+                  )}
+                </View>
+                <Text style={[styles.medicalCardDetail, { color: txtColor }]}>{colorInfo.detail}</Text>
+              </View>
+            );
+          })()}
         </View>
 
         {/* Bristol (stools only) */}
@@ -259,12 +319,36 @@ export function ObserverScreen() {
                         b.status === 'alert' && { color: colors.alT },
                       ]}
                     >
-                      {b.detail}
+                      {b.comment}
                     </Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
+
+            {/* Contexte médical Bristol */}
+            {selectedBristol && (() => {
+              const b = BRISTOL_SCALE.find((x) => x.type === selectedBristol) as BristolType | undefined;
+              if (!b) return null;
+              const bgColor = b.status === 'ok' ? colors.okB : b.status === 'watch' ? colors.waB : colors.alB;
+              const txtColor = b.status === 'ok' ? colors.okT : b.status === 'watch' ? colors.waT : colors.alT;
+              const bdrColor = b.status === 'ok' ? colors.ok : b.status === 'watch' ? colors.waBdr : colors.alBdr;
+              return (
+                <View style={[styles.medicalCard, { backgroundColor: bgColor, borderColor: bdrColor, marginTop: 12 }]}>
+                  <View style={styles.medicalCardHeader}>
+                    <Text style={[styles.medicalCardTitle, { color: txtColor }]}>
+                      Type {b.type} — {b.comment}
+                    </Text>
+                    {b.urgent && (
+                      <View style={styles.urgentBadge}>
+                        <Text style={styles.urgentText}>⚠️ Urgent</Text>
+                      </View>
+                    )}
+                  </View>
+                  <Text style={[styles.medicalCardDetail, { color: txtColor }]}>{b.medical}</Text>
+                </View>
+              );
+            })()}
           </View>
         )}
 
@@ -585,5 +669,73 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_700Bold',
     fontSize: 15,
     color: '#fff',
+  },
+
+  // Photo remove button
+  photoRemove: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoRemoveText: {
+    fontSize: 13,
+    color: '#fff',
+    fontFamily: 'Nunito_700Bold',
+    lineHeight: 16,
+  },
+  photoSub: {
+    fontFamily: 'Nunito_400Regular',
+    fontSize: 11,
+    color: colors.bdr,
+    marginTop: 2,
+  },
+
+  // Medical context cards
+  medicalCard: {
+    marginTop: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 12,
+    gap: 6,
+  },
+  medicalCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  colorDot: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    flexShrink: 0,
+  },
+  medicalCardTitle: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 13,
+    flex: 1,
+  },
+  urgentBadge: {
+    backgroundColor: '#7A1A1A',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  urgentText: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 11,
+    color: '#fff',
+  },
+  medicalCardDetail: {
+    fontFamily: 'Nunito_400Regular',
+    fontSize: 12,
+    lineHeight: 18,
   },
 });
