@@ -34,6 +34,10 @@ jobs:
       - name: Export Expo web
         run: npx expo export --platform web
 
+      - name: Fix asset paths for GitHub Pages subpath
+        run: |
+          sed -i 's|<head>|<head>\n  <base href="/petit_suivi/" />|' dist/index.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
