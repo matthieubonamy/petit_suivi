@@ -105,7 +105,7 @@ export function AddChildScreen({ navigation, route }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView
-        contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom + 32, 48) }]}
+        contentContainerStyle={[styles.content, { paddingBottom: 16 }]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
@@ -195,21 +195,30 @@ export function AddChildScreen({ navigation, route }: Props) {
             );
           })}
         </View>
+      </ScrollView>
 
+      {/* Sticky save button */}
+      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
         <Button
           label={isEditing ? 'Enregistrer les modifications' : 'Ajouter l\'enfant'}
           onPress={handleSave}
           fullWidth
-          style={styles.saveBtn}
         />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24 },
+  content: { padding: 24, paddingBottom: 8 },
+  footer: {
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    backgroundColor: colors.bg,
+    borderTopWidth: 1,
+    borderTopColor: colors.bdr,
+  },
   backBtn: { minHeight: 44, justifyContent: 'center', marginBottom: 8, alignSelf: 'flex-start' },
   backText: { fontFamily: 'Nunito_700Bold', fontSize: 15, color: colors.primary },
   heading: {
@@ -310,5 +319,4 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Nunito_700Bold',
   },
-  saveBtn: { marginTop: 4 },
 });
