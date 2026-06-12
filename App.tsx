@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -43,7 +43,10 @@ import { ReferencesScreen } from './src/screens/ReferencesScreen';
 import { AlertesScreen } from './src/screens/AlertesScreen';
 import { HistoriqueScreen } from './src/screens/HistoriqueScreen';
 
-SplashScreenExpo.preventAutoHideAsync();
+// expo-splash-screen doesn't work on web — skip it
+if (Platform.OS !== 'web') {
+  SplashScreenExpo.preventAutoHideAsync().catch(() => {});
+}
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -137,28 +140,54 @@ function AppNavigator() {
   );
 }
 
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { error: string | null }
+> {
+  state = { error: null };
+  static getDerivedStateFromError(e: Error) {
+    return { error: e.message };
+  }
+  render() {
+    if (this.state.error) {
+      return (
+        <View style={styles.loadingContainer}>
+          <Text style={{ color: '#A52A2A', padding: 20, textAlign: 'center' }}>
+            Erreur : {this.state.error}
+          </Text>
+        </View>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [fontsLoaded, fontsError] = useFonts({
     Fraunces_600SemiBold,
     Nunito_400Regular,
     Nunito_700Bold,
   });
-
+  // On web, fonts may not resolve — use a 3s timeout fallback
+  const [fontTimeout, setFontTimeout] = useState(false);
   useEffect(() => {
-    try {
-      initDatabase();
-    } catch (e) {
-      console.error('DB init error:', e);
-    }
+    const t = setTimeout(() => setFontTimeout(true), 3000);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
-    if (fontsLoaded || fontsError) {
-      SplashScreenExpo.hideAsync();
+    try { initDatabase(); } catch (e) { console.error('DB init error:', e); }
+  }, []);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' && (fontsLoaded || fontsError)) {
+      SplashScreenExpo.hideAsync().catch(() => {});
     }
   }, [fontsLoaded, fontsError]);
 
-  if (!fontsLoaded && !fontsError) {
+  const ready = fontsLoaded || !!fontsError || fontTimeout;
+
+  if (!ready) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator color={colors.primary} size="large" />
@@ -167,16 +196,18 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <AuthProvider>
-        <ChildrenProvider>
-          <NavigationContainer>
-            <StatusBar style="dark" />
-            <AppNavigator />
-          </NavigationContainer>
-        </ChildrenProvider>
-      </AuthProvider>
-    </SafeAreaProvider>
+    <ErrorBoundary>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <ChildrenProvider>
+            <NavigationContainer>
+              <StatusBar style="dark" />
+              <AppNavigator />
+            </NavigationContainer>
+          </ChildrenProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </ErrorBoundary>
   );
 }
 
