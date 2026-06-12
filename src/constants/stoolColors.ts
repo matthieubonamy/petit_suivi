@@ -30,9 +30,9 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'ok',
     comment: 'Normal chez le nourrisson allaité',
     detail:
-      'Couleur habituelle des selles du nourrisson allaité, due à la bilirubine. ' +
-      'Chez l'enfant plus grand, une teinte jaune pâle peut indiquer une malabsorption des graisses ' +
-      '(pancréas, intolérance au gluten). Consulter si persistant.',
+      "Couleur habituelle des selles du nourrisson allaité, due à la bilirubine. " +
+      "Chez l'enfant plus grand, une teinte jaune pâle peut indiquer une malabsorption des graisses " +
+      "(pancréas, intolérance au gluten). Consulter si persistant.",
   },
   {
     id: 'bj',
@@ -41,8 +41,8 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'ok',
     comment: 'Normal — transit sain',
     detail:
-      'Selle typique d'un nourrisson en transition (allaitement + solides). ' +
-      'La couleur est déterminée par la dégradation de la bile dans l'intestin.',
+      "Selle typique d'un nourrisson en transition (allaitement + solides). " +
+      "La couleur est déterminée par la dégradation de la bile dans l'intestin.",
   },
   {
     id: 'br',
@@ -51,9 +51,9 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'ok',
     comment: 'Couleur idéale — tout va bien',
     detail:
-      'Selle brune normale : bien formée, facile à évacuer. ' +
-      'La couleur est due aux pigments biliaires. ' +
-      'Dr Kousmine : « la selle normale est brun clair à brun foncé, en forme de saucisse ».',
+      "Selle brune normale : bien formée, facile à évacuer. " +
+      "La couleur est due aux pigments biliaires. " +
+      "Dr Kousmine : « la selle normale est brun clair à brun foncé, en forme de saucisse ».",
   },
   {
     id: 'bf',
@@ -62,8 +62,8 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'ok',
     comment: 'Normal — souvent alimentation riche',
     detail:
-      'Plus foncé si alimentation carnée ou riche en fer. ' +
-      'Sans odeur forte ni autre symptôme, c'est normal.',
+      "Plus foncé si alimentation carnée ou riche en fer. " +
+      "Sans odeur forte ni autre symptôme, c'est normal.",
   },
   {
     id: 've',
@@ -72,9 +72,9 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'watch',
     comment: 'Transit rapide ou alimentation verte',
     detail:
-      'Causes bénignes : épinards, brocoli, spiruline, suppléments de fer, transit accéléré ' +
-      '(la bile reste verte si elle passe trop vite dans le côlon). ' +
-      'Surveiller si persistant plus de 2 jours ou accompagné de fièvre/douleurs.',
+      "Causes bénignes : épinards, brocoli, spiruline, suppléments de fer, transit accéléré " +
+      "(la bile reste verte si elle passe trop vite dans le côlon). " +
+      "Surveiller si persistant plus de 2 jours ou accompagné de fièvre/douleurs.",
   },
   {
     id: 'or',
@@ -83,8 +83,8 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'watch',
     comment: 'Excès de bêta-carotène ou bile',
     detail:
-      'Souvent lié à une consommation importante de carottes, patates douces, courges. ' +
-      'Peut aussi indiquer un problème biliaire si l'alimentation n'explique pas la couleur.',
+      "Souvent lié à une consommation importante de carottes, patates douces, courges. " +
+      "Peut aussi indiquer un problème biliaire si l'alimentation n'explique pas la couleur.",
   },
   {
     id: 'ro',
@@ -93,9 +93,9 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'alert',
     comment: 'Sang possible — consulter',
     detail:
-      'Peut signifier un saignement du tube digestif inférieur (hémorroïdes, fissure anale, ' +
-      'maladie de Crohn, polypes). Parfois bénin : betteraves, tomates, colorants alimentaires. ' +
-      'Consulter si non expliqué par l'alimentation ou si accompagné de douleurs.',
+      "Peut signifier un saignement du tube digestif inférieur (hémorroïdes, fissure anale, " +
+      "maladie de Crohn, polypes). Parfois bénin : betteraves, tomates, colorants alimentaires. " +
+      "Consulter si non expliqué par l'alimentation ou si accompagné de douleurs.",
     urgent: true,
   },
   {
@@ -105,10 +105,10 @@ export const STOOL_COLORS: StoolColor[] = [
     status: 'alert',
     comment: 'Consulter — saignement possible',
     detail:
-      'Selles noires et goudronneuses : signe possible d'un saignement haut ' +
-      '(estomac, intestin grêle — ulcère, tumeur). ' +
-      'Cause bénigne : suppléments de fer, réglisse noire, myrtilles. ' +
-      'Consulter rapidement si pas expliqué par les médicaments ou alimentation.',
+      "Selles noires et goudronneuses : signe possible d'un saignement haut " +
+      "(estomac, intestin grêle — ulcère, tumeur). " +
+      "Cause bénigne : suppléments de fer, réglisse noire, myrtilles. " +
+      "Consulter rapidement si pas expliqué par les médicaments ou alimentation.",
     urgent: true,
   },
   {
@@ -119,9 +119,9 @@ export const STOOL_COLORS: StoolColor[] = [
     bordered: true,
     comment: 'Urgence — foie ou voies biliaires',
     detail:
-      'Selles pâles ou grises : la bile n'arrive pas dans l'intestin. ' +
-      'Peut indiquer un blocage des voies biliaires, un problème de foie ou de vésicule biliaire. ' +
-      'Si les urines sont foncées en même temps, c'est un cas urgent. Consulter sans délai.',
+      "Selles pâles ou grises : la bile n'arrive pas dans l'intestin. " +
+      "Peut indiquer un blocage des voies biliaires, un problème de foie ou de vésicule biliaire. " +
+      "Si les urines sont foncées en même temps, c'est un cas urgent. Consulter sans délai.",
     urgent: true,
   },
 ];
@@ -135,8 +135,8 @@ export const URINE_COLORS: UrineColor[] = [
     bordered: true,
     comment: 'Trop hydraté ou diabète insipide',
     detail:
-      'Urines très claires : hydratation excessive ou, rarement, diabète insipide. ' +
-      'Surveiller si persistant.',
+      "Urines très claires : hydratation excessive ou, rarement, diabète insipide. " +
+      "Surveiller si persistant.",
   },
   {
     id: 'jp',
@@ -144,7 +144,7 @@ export const URINE_COLORS: UrineColor[] = [
     hex: '#F5EEB0',
     status: 'ok',
     comment: 'Hydratation idéale',
-    detail: 'Couleur cible : bonne hydratation, reins fonctionnels.',
+    detail: "Couleur cible : bonne hydratation, reins fonctionnels.",
   },
   {
     id: 'ja',
@@ -152,7 +152,7 @@ export const URINE_COLORS: UrineColor[] = [
     hex: '#E8D047',
     status: 'ok',
     comment: 'Normal',
-    detail: 'Urines normales. Continuer à bien hydrater.',
+    detail: "Urines normales. Continuer à bien hydrater.",
   },
   {
     id: 'jf',
@@ -161,8 +161,8 @@ export const URINE_COLORS: UrineColor[] = [
     status: 'watch',
     comment: 'Hydratation insuffisante',
     detail:
-      'Urines concentrées : nourrisson pas assez hydraté. ' +
-      'Augmenter les tétées ou l'apport en eau selon l'âge.',
+      "Urines concentrées : nourrisson pas assez hydraté. " +
+      "Augmenter les tétées ou l'apport en eau selon l'âge.",
   },
   {
     id: 'am',
@@ -171,8 +171,8 @@ export const URINE_COLORS: UrineColor[] = [
     status: 'alert',
     comment: 'Déshydratation ou problème hépatique',
     detail:
-      'Urines très foncées : déshydratation sévère, ou problème de foie (jaunisse). ' +
-      'Si associé à des selles pâles, consulter en urgence.',
+      "Urines très foncées : déshydratation sévère, ou problème de foie (jaunisse). " +
+      "Si associé à des selles pâles, consulter en urgence.",
     urgent: true,
   },
   {
@@ -182,9 +182,9 @@ export const URINE_COLORS: UrineColor[] = [
     status: 'alert',
     comment: 'Sang possible — consulter',
     detail:
-      'Peut indiquer du sang dans les urines (infection urinaire, calcul, traumatisme). ' +
-      'Parfois dû aux betteraves ou certains médicaments. ' +
-      'Consulter si non expliqué par l'alimentation.',
+      "Peut indiquer du sang dans les urines (infection urinaire, calcul, traumatisme). " +
+      "Parfois dû aux betteraves ou certains médicaments. " +
+      "Consulter si non expliqué par l'alimentation.",
     urgent: true,
   },
 ];

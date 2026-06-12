@@ -17,11 +17,11 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Constipation sévère',
     comment: 'Constipation sévère — transit très lent',
     medical:
-      'Selles en petites billes sèches et dures, difficiles à évacuer et parfois douloureuses. ' +
-      'Signe d'un transit très ralenti (>3 jours). ' +
-      'Causes fréquentes : manque de fibres, déshydratation, sédentarité. ' +
-      'Chez le nourrisson : rare avant 6 mois si allaitement exclusif. ' +
-      'Consulter si persistant plus de 3–5 jours ou accompagné de douleurs.',
+      "Selles en petites billes sèches et dures, difficiles à évacuer et parfois douloureuses. " +
+      "Signe d'un transit très ralenti (>3 jours). " +
+      "Causes fréquentes : manque de fibres, déshydratation, sédentarité. " +
+      "Chez le nourrisson : rare avant 6 mois si allaitement exclusif. " +
+      "Consulter si persistant plus de 3–5 jours ou accompagné de douleurs.",
     status: 'alert',
   },
   {
@@ -30,10 +30,10 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Constipation légère',
     comment: 'Constipation légère — transit lent',
     medical:
-      'Selles en boudin mais avec des bosses : transit un peu lent. ' +
-      'Souvent lié à un manque d'hydratation ou de fibres. ' +
-      'Augmenter l'apport en eau, fruits et légumes. ' +
-      'Surveiller si se produit plusieurs jours de suite.',
+      "Selles en boudin mais avec des bosses : transit un peu lent. " +
+      "Souvent lié à un manque d'hydratation ou de fibres. " +
+      "Augmenter l'apport en eau, fruits et légumes. " +
+      "Surveiller si se produit plusieurs jours de suite.",
     status: 'watch',
   },
   {
@@ -42,9 +42,9 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Normal',
     comment: 'Normal — transit légèrement ferme',
     medical:
-      'Selles bien formées avec quelques craquelures en surface. ' +
-      'Transit correct, légèrement ferme. ' +
-      'Augmenter légèrement l'hydratation si récurrent.',
+      "Selles bien formées avec quelques craquelures en surface. " +
+      "Transit correct, légèrement ferme. " +
+      "Augmenter légèrement l'hydratation si récurrent.",
     status: 'ok',
   },
   {
@@ -53,10 +53,10 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Idéal',
     comment: 'Forme idéale — transit parfait',
     medical:
-      'La selle idéale selon l'échelle de Bristol. ' +
-      'Forme de saucisse lisse et souple, facile à évacuer, sans effort ni douleur. ' +
-      'Dr Kousmine : « la selle normale est brun clair à brun foncé, en forme de saucisse ». ' +
-      'Indique un transit intestinal sain et une bonne hydratation.',
+      "La selle idéale selon l'échelle de Bristol. " +
+      "Forme de saucisse lisse et souple, facile à évacuer, sans effort ni douleur. " +
+      "Dr Kousmine : « la selle normale est brun clair à brun foncé, en forme de saucisse ». " +
+      "Indique un transit intestinal sain et une bonne hydratation.",
     status: 'ok',
   },
   {
@@ -65,9 +65,9 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'À surveiller',
     comment: 'Transit un peu rapide — à surveiller',
     medical:
-      'Morceaux mous aux bords bien définis : transit légèrement accéléré. ' +
-      'Peut indiquer un début de diarrhée, un repas riche en graisses, ou une irritation intestinale légère. ' +
-      'Surveiller si persistant plus de 24h.',
+      "Morceaux mous aux bords bien définis : transit légèrement accéléré. " +
+      "Peut indiquer un début de diarrhée, un repas riche en graisses, ou une irritation intestinale légère. " +
+      "Surveiller si persistant plus de 24h.",
     status: 'watch',
   },
   {
@@ -76,10 +76,10 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Diarrhée légère',
     comment: 'Diarrhée légère — transit trop rapide',
     medical:
-      'Selles molles et pâteuses sans forme définie. ' +
-      'Transit accéléré : la bile n'a pas le temps d'être transformée. ' +
-      'Causes fréquentes : gastroentérite, intolérance alimentaire, stress, antibiotiques. ' +
-      'Hydrater régulièrement. Consulter si dure plus de 24–48h ou accompagnée de fièvre.',
+      "Selles molles et pâteuses sans forme définie. " +
+      "Transit accéléré : la bile n'a pas le temps d'être transformée. " +
+      "Causes fréquentes : gastroentérite, intolérance alimentaire, stress, antibiotiques. " +
+      "Hydrater régulièrement. Consulter si dure plus de 24–48h ou accompagnée de fièvre.",
     status: 'watch',
   },
   {
@@ -88,10 +88,10 @@ export const BRISTOL_SCALE: BristolType[] = [
     detail: 'Diarrhée sévère',
     comment: 'Diarrhée sévère — risque de déshydratation',
     medical:
-      'Selles entièrement liquides : diarrhée sévère avec risque de déshydratation rapide, ' +
-      'surtout chez le nourrisson. ' +
-      'Signes à surveiller : bouche sèche, yeux creux, fontanelle enfoncée, moins de 4 couches mouillées/jour. ' +
-      'Consulter rapidement si nourrisson < 3 mois, ou si diarrhée > 6h.',
+      "Selles entièrement liquides : diarrhée sévère avec risque de déshydratation rapide, " +
+      "surtout chez le nourrisson. " +
+      "Signes à surveiller : bouche sèche, yeux creux, fontanelle enfoncée, moins de 4 couches mouillées/jour. " +
+      "Consulter rapidement si nourrisson < 3 mois, ou si diarrhée > 6h.",
     status: 'alert',
     urgent: true,
   },
