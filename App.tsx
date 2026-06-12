@@ -41,6 +41,7 @@ import { AdminLoginScreen } from './src/screens/AdminLoginScreen';
 import { AdminDashboardScreen } from './src/screens/AdminDashboardScreen';
 import { AdminContentScreen } from './src/screens/AdminContentScreen';
 import { AdminUsersScreen } from './src/screens/AdminUsersScreen';
+import { InstallBanner } from './src/components/ui/InstallBanner';
 
 import { RootStackParamList, MainTabParamList } from './src/types';
 
@@ -157,6 +158,7 @@ export default function App() {
             <NavigationContainer>
               <RootStack />
             </NavigationContainer>
+            <InstallBanner />
           </ChildrenProvider>
         </AuthProvider>
       </SafeAreaProvider>

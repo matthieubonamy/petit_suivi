@@ -43,8 +43,11 @@ jobs:
           sed -i 's|href="/assets/|href="/petit_suivi/assets/|g' dist/index.html
           # Fix asset paths inside the JS bundle (fonts, images, etc.)
           find dist/_expo -name "*.js" -exec sed -i 's|"/assets/|"/petit_suivi/assets/|g' {} \;
-          # Inject PWA meta tags (apple touch icon, theme color)
-          sed -i 's|</head>|  <link rel="apple-touch-icon" href="/petit_suivi/assets/apple-touch-icon.png">\n  <meta name="theme-color" content="#FAF6F0">\n  <meta name="mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-title" content="Petit Suivi">\n</head>|g' dist/index.html
+          # Inject PWA meta tags + manifest link
+          sed -i 's|</head>|  <link rel="manifest" href="/petit_suivi/manifest.json">\n  <link rel="apple-touch-icon" href="/petit_suivi/assets/apple-touch-icon.png">\n  <meta name="theme-color" content="#C97B4A">\n  <meta name="mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-capable" content="yes">\n  <meta name="apple-mobile-web-app-status-bar-style" content="default">\n  <meta name="apple-mobile-web-app-title" content="Petit Suivi">\n</head>|g' dist/index.html
+          # Copy manifest.json (already in web/ — Expo copies web/ to dist/)
+          # Ensure it's present even if Expo skips it
+          cp web/manifest.json dist/manifest.json 2>/dev/null || true
           echo "--- index.html after fix ---"
           cat dist/index.html
 
