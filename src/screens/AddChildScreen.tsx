@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -198,7 +199,7 @@ export function AddChildScreen({ navigation, route }: Props) {
       </ScrollView>
 
       {/* Sticky save button */}
-      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+      <View style={[styles.footer, { paddingBottom: Platform.OS === 'web' ? 24 : Math.max(insets.bottom, 12) }]}>
         <Button
           label={isEditing ? 'Enregistrer les modifications' : 'Ajouter l\'enfant'}
           onPress={handleSave}
