@@ -9,13 +9,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { colors } from '../constants/tokens';
 import { useAuth } from '../stores/AuthContext';
 import { RootStackParamList } from '../types';
 import { PSLogo } from '../components/ui/PSLogo';
 
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
+type NavProp = StackNavigationProp<RootStackParamList>;
 
 interface SettingsRowProps {
   icon: string;

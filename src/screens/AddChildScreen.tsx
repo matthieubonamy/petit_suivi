@@ -26,7 +26,7 @@ export function AddChildScreen({ navigation, route }: Props) {
 
   const [name, setName] = useState('');
   const [birthDate, setBirthDate] = useState('');
-  const [selectedColor, setSelectedColor] = useState(AVATAR_COLORS[0].hex);
+  const [selectedColor, setSelectedColor] = useState<string>(AVATAR_COLORS[0].hex);
   const [errors, setErrors] = useState<{ name?: string; birthDate?: string }>({});
 
   useEffect(() => {

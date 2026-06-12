@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { colors } from '../constants/tokens';
 import { RootStackParamList } from '../types';
 
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
+type NavProp = StackNavigationProp<RootStackParamList>;
 
 const SIMULATED_METRICS = {
   totalUsers: 1247,

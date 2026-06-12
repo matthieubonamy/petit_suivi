@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -45,7 +45,7 @@ import { HistoriqueScreen } from './src/screens/HistoriqueScreen';
 
 SplashScreenExpo.preventAutoHideAsync();
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
 function TabIcon({ icon, focused }: { icon: string; focused: boolean }) {
@@ -116,8 +116,7 @@ function AppNavigator() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: colors.bg },
-        animation: 'slide_from_right',
+        cardStyle: { backgroundColor: colors.bg },
       }}
     >
       <Stack.Screen name="Splash" component={SplashScreen} />
@@ -126,16 +125,8 @@ function AppNavigator() {
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />
-      <Stack.Screen
-        name="AddChild"
-        component={AddChildScreen}
-        options={{ animation: 'slide_from_bottom' }}
-      />
-      <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{ animation: 'slide_from_right' }}
-      />
+      <Stack.Screen name="AddChild" component={AddChildScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="APIKeys" component={APIKeysScreen} />
       <Stack.Screen name="Legal" component={LegalScreen} />
       <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
@@ -180,7 +171,7 @@ export default function App() {
       <AuthProvider>
         <ChildrenProvider>
           <NavigationContainer>
-            <StatusBar style="dark" backgroundColor={colors.bg} />
+            <StatusBar style="dark" />
             <AppNavigator />
           </NavigationContainer>
         </ChildrenProvider>

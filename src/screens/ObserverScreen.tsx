@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../constants/tokens';
 import { STOOL_COLORS, URINE_COLORS } from '../constants/stoolColors';
@@ -27,7 +27,7 @@ import { BristolVisual } from '../components/ui/BristolVisual';
 import { EmptyState } from '../components/ui/EmptyState';
 import { RootStackParamList, StatusLevel } from '../types';
 
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
+type NavProp = StackNavigationProp<RootStackParamList>;
 
 export function ObserverScreen() {
   const navigation = useNavigation<NavProp>();

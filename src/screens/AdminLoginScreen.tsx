@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { colors } from '../constants/tokens';
 import { RootStackParamList } from '../types';
 import { TextInput } from '../components/ui/TextInput';
 import { Button } from '../components/ui/Button';
 
-type NavProp = NativeStackNavigationProp<RootStackParamList>;
+type NavProp = StackNavigationProp<RootStackParamList>;
 
 const ADMIN_PIN = '2025'; // Demo PIN
 

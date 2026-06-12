@@ -24,7 +24,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function Para({ children }: { children: string }) {
+function Para({ children }: { children: React.ReactNode }) {
   return <Text style={styles.legalText}>{children}</Text>;
 }
 

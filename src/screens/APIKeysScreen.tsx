@@ -206,10 +206,9 @@ const styles = StyleSheet.create({
   keyLabel: { fontFamily: 'Nunito_700Bold', fontSize: 15, color: colors.dk },
   keyProvider: { fontFamily: 'Nunito_400Regular', fontSize: 12, color: colors.mu, marginTop: 2 },
   keyValue: {
-    fontFamily: 'Nunito_400Regular',
+    fontFamily: 'monospace' as any,
     fontSize: 12,
     color: colors.mu,
-    fontFamily: 'monospace' as any,
     marginTop: 4,
   },
   keyDeleteBtn: {
