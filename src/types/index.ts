@@ -44,6 +44,7 @@ export type RootStackParamList = {
   Signup: undefined;
   ForgotPassword: undefined;
   MainTabs: undefined;
+  Children: undefined;
   AddChild: { childId?: string };
   Settings: undefined;
   APIKeys: undefined;

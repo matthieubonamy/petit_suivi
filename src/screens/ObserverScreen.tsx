@@ -121,7 +121,7 @@ export function ObserverScreen() {
           title="Aucun enfant"
           subtitle="Ajoutez un enfant pour commencer les observations."
           actionLabel="Ajouter un enfant"
-          onAction={() => navigation.navigate('AddChild', {})}
+          onAction={() => navigation.navigate('Children')}
         />
       </SafeAreaView>
     );
@@ -146,30 +146,38 @@ export function ObserverScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Child selector */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.childScroll}>
-          <View style={styles.childChips}>
-            {children.map((child) => (
-              <TouchableOpacity
-                key={child.id}
-                style={[
-                  styles.childChip,
-                  selectedChildId === child.id && styles.childChipActive,
-                ]}
-                onPress={() => setSelectedChildId(child.id)}
-              >
-                <AvatarCircle name={child.name} color={child.avatarColor} size={28} />
-                <Text
+        <View style={styles.childRow}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.childScroll}>
+            <View style={styles.childChips}>
+              {children.map((child) => (
+                <TouchableOpacity
+                  key={child.id}
                   style={[
-                    styles.childChipText,
-                    selectedChildId === child.id && styles.childChipTextActive,
+                    styles.childChip,
+                    selectedChildId === child.id && styles.childChipActive,
                   ]}
+                  onPress={() => setSelectedChildId(child.id)}
                 >
-                  {child.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
+                  <AvatarCircle name={child.name} color={child.avatarColor} size={28} />
+                  <Text
+                    style={[
+                      styles.childChipText,
+                      selectedChildId === child.id && styles.childChipTextActive,
+                    ]}
+                  >
+                    {child.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </ScrollView>
+          <TouchableOpacity
+            style={styles.manageChildrenBtn}
+            onPress={() => navigation.navigate('Children')}
+          >
+            <Text style={styles.manageChildrenText}>Gérer</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* Type toggle */}
         <View style={styles.section}>
@@ -346,8 +354,27 @@ const styles = StyleSheet.create({
   settingsBtn: { minHeight: 44, minWidth: 44, alignItems: 'center', justifyContent: 'center' },
   settingsIcon: { fontSize: 22 },
   content: { padding: 16, gap: 4 },
-  childScroll: { marginBottom: 16 },
-  childChips: { flexDirection: 'row', gap: 8, paddingRight: 16 },
+  childRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  childScroll: { flex: 1 },
+  childChips: { flexDirection: 'row', gap: 8, paddingRight: 8 },
+  manageChildrenBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: colors.pl,
+    minHeight: 44,
+    justifyContent: 'center',
+    marginLeft: 4,
+  },
+  manageChildrenText: {
+    fontFamily: 'Nunito_700Bold',
+    fontSize: 13,
+    color: colors.primary,
+  },
   childChip: {
     flexDirection: 'row',
     alignItems: 'center',

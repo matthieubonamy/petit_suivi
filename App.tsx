@@ -27,6 +27,7 @@ import { OnboardingScreen } from './src/screens/OnboardingScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { SignupScreen } from './src/screens/SignupScreen';
 import { ForgotPasswordScreen } from './src/screens/ForgotPasswordScreen';
+import { ChildrenListScreen } from './src/screens/ChildrenListScreen';
 import { AddChildScreen } from './src/screens/AddChildScreen';
 import { ObserverScreen } from './src/screens/ObserverScreen';
 import { HistoriqueScreen } from './src/screens/HistoriqueScreen';
@@ -103,6 +104,7 @@ function RootStack() {
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Screen name="Children" component={ChildrenListScreen} />
       <Stack.Screen name="AddChild" component={AddChildScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="APIKeys" component={APIKeysScreen} />

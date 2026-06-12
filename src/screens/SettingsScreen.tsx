@@ -104,6 +104,17 @@ export function SettingsScreen() {
           )}
         </View>
 
+        {/* Children section */}
+        <Text style={styles.sectionLabel}>Enfants</Text>
+        <View style={styles.card}>
+          <SettingsRow
+            icon="👶"
+            label="Gérer les enfants"
+            subtitle="Ajouter, modifier ou supprimer"
+            onPress={() => navigation.navigate('Children')}
+          />
+        </View>
+
         {/* Data section */}
         <Text style={styles.sectionLabel}>Données</Text>
         <View style={styles.card}>
