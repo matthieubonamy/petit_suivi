@@ -1,15 +1,5 @@
-import React, { useState, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { colors } from '../constants/tokens';
@@ -17,67 +7,51 @@ import { Button } from '../components/ui/Button';
 
 type Props = StackScreenProps<RootStackParamList, 'Onboarding'>;
 
-const { width } = Dimensions.get('window');
-
 const SLIDES = [
   {
     icon: '👶',
     title: 'Bienvenue dans\nPetit Suivi',
-    body: "Suivez facilement les selles et urines de votre nourrisson pour veiller à sa santé.",
+    body: 'Suivez facilement les selles et urines de votre nourrisson pour veiller à sa santé.',
   },
   {
     icon: '🌿',
     title: 'Simple et\nBienveillant',
-    body: "Enregistrez chaque observation en quelques secondes. Couleur, consistance, notes.",
+    body: 'Enregistrez chaque observation en quelques secondes. Couleur, consistance, notes.',
   },
   {
     icon: '🔒',
     title: 'Vos données\nvous appartiennent',
-    body: "Tout est stocké localement sur votre appareil. Offline-first, respectueux de votre vie privée.",
+    body: 'Tout est stocké localement sur votre appareil. Offline-first, respectueux de votre vie privée.',
   },
   {
     icon: '🩺',
     title: 'Repères médicaux',
-    body: "Consultez les fréquences normales par âge et sachez quand consulter un médecin.",
+    body: 'Consultez les fréquences normales par âge et sachez quand consulter un médecin.',
   },
 ];
 
 export function OnboardingScreen({ navigation }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<ScrollView>(null);
-
-  function handleScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
-    const idx = Math.round(e.nativeEvent.contentOffset.x / width);
-    setActiveIndex(idx);
-  }
+  const slide = SLIDES[activeIndex];
 
   function next() {
     if (activeIndex < SLIDES.length - 1) {
-      scrollRef.current?.scrollTo({ x: (activeIndex + 1) * width, animated: true });
+      setActiveIndex(activeIndex + 1);
     } else {
       navigation.replace('Login');
     }
   }
 
   return (
-    <SafeAreaView style={styles.safe}>
-      <ScrollView
-        ref={scrollRef}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={handleScroll}
-        style={styles.scroll}
-      >
-        {SLIDES.map((slide, i) => (
-          <View key={i} style={[styles.slide, { width }]}>
-            <Text style={styles.icon}>{slide.icon}</Text>
-            <Text style={styles.title}>{slide.title}</Text>
-            <Text style={styles.body}>{slide.body}</Text>
-          </View>
-        ))}
-      </ScrollView>
+    <View style={styles.container}>
+      {/* Slide content */}
+      <View style={styles.slide}>
+        <Text style={styles.icon}>{slide.icon}</Text>
+        <Text style={styles.title}>{slide.title}</Text>
+        <Text style={styles.body}>{slide.body}</Text>
+      </View>
 
+      {/* Fixed footer */}
       <View style={styles.footer}>
         <View style={styles.dots}>
           {SLIDES.map((_, i) => (
@@ -89,20 +63,22 @@ export function OnboardingScreen({ navigation }: Props) {
           label={activeIndex === SLIDES.length - 1 ? 'Commencer' : 'Suivant'}
           onPress={next}
           fullWidth
-          style={styles.btn}
         />
 
         <TouchableOpacity onPress={() => navigation.replace('Login')} style={styles.skipBtn}>
           <Text style={styles.skipText}>Passer</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
-  scroll: { flex: 1 },
+  container: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    flexDirection: 'column',
+  },
   slide: {
     flex: 1,
     alignItems: 'center',
@@ -126,29 +102,31 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   footer: {
-    padding: 24,
-    gap: 12,
+    paddingHorizontal: 24,
+    paddingBottom: 40,
+    paddingTop: 16,
+    backgroundColor: colors.bg,
   },
   dots: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 8,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   dot: {
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: colors.bdr,
+    marginHorizontal: 4,
   },
   dotActive: {
     backgroundColor: colors.primary,
     width: 20,
   },
-  btn: {},
   skipBtn: {
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 12,
+    marginTop: 8,
     minHeight: 44,
     justifyContent: 'center',
   },
