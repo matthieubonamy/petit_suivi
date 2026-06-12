@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { colors, AVATAR_CATALOG, AVATAR_IMAGES, AvatarCategory } from '../constants/tokens';
@@ -31,6 +31,7 @@ const CATEGORY_TABS: { key: AvatarCategory; label: string }[] = [
 const DEFAULT_COLOR = '#C97B4A';
 
 export function AddChildScreen({ navigation, route }: Props) {
+  const insets = useSafeAreaInsets();
   const { addChild, editChild } = useChildren();
   const childId = route.params?.childId;
   const isEditing = Boolean(childId);
@@ -103,7 +104,11 @@ export function AddChildScreen({ navigation, route }: Props) {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom + 32, 48) }]}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <Text style={styles.backText}>← Retour</Text>
         </TouchableOpacity>
@@ -204,7 +209,7 @@ export function AddChildScreen({ navigation, route }: Props) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.bg },
-  content: { padding: 24, paddingBottom: 48 },
+  content: { padding: 24 },
   backBtn: { minHeight: 44, justifyContent: 'center', marginBottom: 8, alignSelf: 'flex-start' },
   backText: { fontFamily: 'Nunito_700Bold', fontSize: 15, color: colors.primary },
   heading: {
