@@ -1,9 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Placeholders - l'utilisateur doit configurer les vraies valeurs
-const SUPABASE_URL = 'https://placeholder.supabase.co';
-const SUPABASE_ANON_KEY = 'placeholder_key';
+const SUPABASE_URL = 'https://eyknrqblaphxulurbzpj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5a25ycWJsYXBoeHVsdXJienBqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyNTEzMjMsImV4cCI6MjA5NjgyNzMyM30.dTwt1ArdhsNZKXsd2O9vPZlJC7hAx01vHoYW6HegG5k';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
