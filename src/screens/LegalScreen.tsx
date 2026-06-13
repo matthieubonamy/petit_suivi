@@ -10,7 +10,7 @@ type LegalRoute = RouteProp<RootStackParamList, 'Legal'>;
 type Tab = 'cgv' | 'rgpd' | 'mentions';
 
 const TAB_LABELS: Record<Tab, string> = {
-  cgv: 'CGV',
+  cgv: 'CGU',
   rgpd: 'RGPD',
   mentions: 'Mentions',
 };
@@ -31,39 +31,86 @@ function Para({ children }: { children: React.ReactNode }) {
 function CGVContent() {
   return (
     <>
-      <Section title="Objet">
+      <Para>
+        Les présentes Conditions Générales d'Utilisation (CGU) régissent l'accès et l'utilisation
+        de l'application mobile Petit Suivi, disponible sur navigateur web (Progressive Web App).
+        En utilisant l'application, vous acceptez sans réserve les présentes CGU.
+      </Para>
+
+      <Section title="1. Objet de l'application">
         <Para>
-          Les présentes conditions générales de vente régissent l'utilisation de l'application
-          Petit Suivi, un outil de suivi de la santé digestive des nourrissons et enfants de 0 à 6 ans.
+          Petit Suivi est une application gratuite d'aide au suivi de la santé digestive des
+          nourrissons et jeunes enfants (0 à 6 ans). Elle permet aux parents et aidants d'observer
+          et d'enregistrer les selles et urines de l'enfant, avec des repères de couleur et de
+          consistance issus de la littérature pédiatrique.
         </Para>
       </Section>
-      <Section title="Compte utilisateur">
+
+      <Section title="2. Accès et inscription">
         <Para>
-          La création d'un compte est optionnelle. Sans compte, les données restent sur l'appareil.
-          Avec un compte Supabase, certaines fonctionnalités de synchronisation peuvent être activées.
-          L'utilisateur est responsable de la confidentialité de ses identifiants.
+          L'application est accessible gratuitement sans création de compte. La création d'un compte
+          (adresse email + mot de passe) est optionnelle et permet une future synchronisation des
+          données. L'utilisateur est seul responsable de la confidentialité de ses identifiants.
+          Toute utilisation frauduleuse du compte engage la responsabilité de l'utilisateur.
         </Para>
       </Section>
-      <Section title="Données de suivi">
+
+      <Section title="3. Données de santé et stockage local">
         <Para>
-          Les données de suivi (observations, photos) sont stockées localement sur l'appareil par défaut.
-          L'application ne collecte pas ni ne transmet ces données à des serveurs tiers sans consentement explicite.
+          Toutes les données de suivi saisies (observations, photos, notes) sont stockées
+          exclusivement sur l'appareil de l'utilisateur via le stockage local du navigateur
+          (localStorage). Ces données ne sont ni transmises, ni hébergées sur un serveur distant,
+          ni accessibles à l'éditeur. L'utilisateur en conserve le contrôle total et peut les
+          supprimer à tout moment en effaçant les données de navigation.
         </Para>
       </Section>
-      <Section title="Responsabilité">
+
+      <Section title="4. Avertissement médical">
         <Para>
-          Petit Suivi est un outil d'aide au suivi et ne constitue pas un dispositif médical.
-          Les informations fournies ne remplacent pas l'avis d'un professionnel de santé.
-          L'éditeur décline toute responsabilité en cas d'usage médical de l'application.
+          Petit Suivi est un outil d'aide au suivi et d'information générale. Il ne constitue
+          pas un dispositif médical au sens de la réglementation européenne (règlement UE 2017/745).
+          Les informations et repères fournis ne remplacent en aucun cas l'avis, le diagnostic
+          ou le traitement d'un professionnel de santé (pédiatre, médecin généraliste, sage-femme).{'\n\n'}
+          En cas de doute, de symptôme inhabituel ou de situation d'urgence, consultez
+          immédiatement un professionnel de santé ou appelez le 15 (SAMU).
         </Para>
       </Section>
-      <Section title="Modifications">
+
+      <Section title="5. Propriété intellectuelle">
         <Para>
-          L'éditeur se réserve le droit de modifier ces conditions à tout moment. Les utilisateurs
-          seront informés de toute modification substantielle lors de l'ouverture de l'application.
+          L'ensemble des éléments de l'application (code source, design, textes, illustrations,
+          logo) est protégé par le droit d'auteur. Toute reproduction, représentation, modification
+          ou exploitation sans autorisation écrite préalable de l'éditeur est strictement interdite.
         </Para>
       </Section>
-      <Para>Dernière mise à jour : juin 2025</Para>
+
+      <Section title="6. Limitation de responsabilité">
+        <Para>
+          L'éditeur s'efforce d'assurer la disponibilité et l'exactitude des informations
+          contenues dans l'application mais ne garantit pas leur exhaustivité. L'éditeur ne
+          saurait être tenu responsable de tout dommage direct ou indirect résultant de
+          l'utilisation ou de l'impossibilité d'utiliser l'application, notamment en cas de
+          perte de données locales liée à la suppression du cache du navigateur.
+        </Para>
+      </Section>
+
+      <Section title="7. Modifications des CGU">
+        <Para>
+          L'éditeur se réserve le droit de modifier les présentes CGU à tout moment. La version
+          en vigueur est accessible dans l'application. La poursuite de l'utilisation après
+          modification vaut acceptation des nouvelles conditions.
+        </Para>
+      </Section>
+
+      <Section title="8. Droit applicable">
+        <Para>
+          Les présentes CGU sont soumises au droit français. En cas de litige, les parties
+          rechercheront une solution amiable avant tout recours judiciaire. À défaut, les
+          tribunaux français seront seuls compétents.
+        </Para>
+      </Section>
+
+      <Para>Dernière mise à jour : juin 2026</Para>
     </>
   );
 }
@@ -115,30 +162,48 @@ function MentionsContent() {
     <>
       <Section title="Éditeur">
         <Para>
-          Petit Suivi{'\n'}
-          Application mobile de suivi pédiatrique{'\n'}
+          Petit Suivi — Application de suivi pédiatrique{'\n'}
+          Éditeur : particulier (personne physique){'\n'}
+          France{'\n'}
           Contact : contact@petitsuivi.fr
         </Para>
       </Section>
       <Section title="Directeur de publication">
         <Para>
-          Le directeur de publication est le représentant légal de l'éditeur de l'application.
+          Le directeur de publication est l'éditeur de l'application, personne physique dont
+          les coordonnées complètes sont communiquées sur demande à l'adresse{' '}
+          contact@petitsuivi.fr, conformément à l'article 6-I de la loi n° 2004-575
+          du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN).
         </Para>
       </Section>
-      <Section title="Hébergement">
+      <Section title="Hébergement de l'application">
         <Para>
-          Les données d'authentification sont hébergées par Supabase Inc.{'\n'}
-          970 Toa Payoh North, Singapour.{'\n'}
-          Les données de suivi sont stockées uniquement sur l'appareil de l'utilisateur.
+          L'application est hébergée sur GitHub Pages{'\n'}
+          GitHub, Inc. — 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis{'\n'}
+          https://pages.github.com
+        </Para>
+      </Section>
+      <Section title="Hébergement de l'authentification">
+        <Para>
+          Les données d'authentification (email, mot de passe chiffré) sont hébergées par{'\n'}
+          Supabase Inc. — 970 Toa Payoh North, Singapour{'\n'}
+          https://supabase.com — conforme RGPD
+        </Para>
+      </Section>
+      <Section title="Données de santé">
+        <Para>
+          Les données de suivi (observations, photos, notes) sont stockées exclusivement
+          sur l'appareil de l'utilisateur. L'éditeur n'y a aucun accès.
         </Para>
       </Section>
       <Section title="Propriété intellectuelle">
         <Para>
-          L'ensemble des contenus de l'application (textes, graphismes, logo, icônes) est protégé
-          par le droit d'auteur. Toute reproduction sans autorisation est interdite.
+          L'ensemble des contenus (code, design, textes, illustrations, logo) est la propriété
+          de l'éditeur et protégé par le droit d'auteur français. Toute reproduction ou
+          utilisation sans autorisation préalable écrite est interdite.
         </Para>
       </Section>
-      <Para>Contact : contact@petitsuivi.fr</Para>
+      <Para>Dernière mise à jour : juin 2026</Para>
     </>
   );
 }
